@@ -14,6 +14,7 @@ import ExpenseTransactions from '../../components/Dashboard/ExpenseTransactions'
 import Last30DaysExpenses from '../../components/Dashboard/Last30DaysExpenses';
 import RecentIncomeWithChart from '../../components/Dashboard/RecentIncomeWithChart';
 import RecentIncome from '../../components/Dashboard/RecentIncome';
+import AIReviewSection from '../../components/Dashboard/AIReviewSection';
 const Home = () => {
   useUserAuth();
 
@@ -101,6 +102,12 @@ const Home = () => {
           onSeeMore={() => navigate("/income")}
           />
 
+          
+
+        </div>
+
+        <div className="grid grid-cols-1 mt-6">
+          <AIReviewSection/>
         </div>
       </div>
     </DashboardLayout>

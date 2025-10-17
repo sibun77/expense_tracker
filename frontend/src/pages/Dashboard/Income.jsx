@@ -21,6 +21,11 @@ const Income = () => {
   });
 
   const [openAddIncomeModal, setOpenAddIncomeModal] = useState(false)
+  const [openEditIncomeModal, setOpenEditIncomeModal] = useState({
+    show: false,
+    data: null
+  });
+
 
   // Get All Income Details
   const fetchIncomeDetails = async () => {
@@ -84,6 +89,43 @@ const Income = () => {
     }
   };
 
+  // Handle Edit Income
+  const handleEditIncome = async (updatedIncome) => {
+    const { source, amount, date, icon, _id } = updatedIncome;
+
+    if (!source.trim()) {
+      toast.error("Source is required.");
+      return;
+    }
+
+    if (!amount || isNaN(amount) || Number(amount) <= 0) {
+      toast.error("Amount should be a valid number greater than 0.");
+      return;
+    }
+
+    if (!date) {
+      toast.error("Date is required.");
+      return;
+    }
+
+    try {
+      await axiosInstance.put(API_PATHS.INCOME.UPDATE_INCOME(_id), {
+        source,
+        amount,
+        date,
+        icon
+      });
+
+      toast.success("Income updated successfully");
+      setOpenEditIncomeModal({ show: false, data: null });
+      fetchIncomeDetails();
+    } catch (error) {
+      console.error("Error updating income:", error);
+      toast.error("Failed to update income");
+    }
+  };
+
+
   // Delete Income
   const deleteIncome = async (id) => {
     try {
@@ -144,11 +186,11 @@ const Income = () => {
 
           <IncomeList
             transactions={incomeData}
-            onDelete={(id) => {
-              setOpenDeleteAlert({ show: true, data: id });
-            }}
+            onDelete={(id) => setOpenDeleteAlert({ show: true, data: id })}
             onDownload={handleDownloadIncomeDetails}
+            onEdit={(income) => setOpenEditIncomeModal({ show: true, data: income })}
           />
+
         </div>
 
         <Modal
@@ -169,6 +211,19 @@ const Income = () => {
             onDelete={() => deleteIncome(openDeleteAlert.data)}
           />
         </Modal>
+
+        <Modal
+          isOpen={openEditIncomeModal.show}
+          onClose={() => setOpenEditIncomeModal({ show: false, data: null })}
+          title="Edit Income"
+        >
+          <AddIncomeForm
+            onAddIncome={handleEditIncome}
+            existingData={openEditIncomeModal.data}
+            isEditing={true}
+          />
+        </Modal>
+
 
 
       </div>

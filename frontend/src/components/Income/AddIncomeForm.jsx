@@ -1,54 +1,81 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Input from '../../components/Inputs/Input'
 import EmojiPickerPopup from '../EmojiPickerPopup'
 
-const AddIncomeForm = ({onAddIncome}) => {
-    const [income,setIncome] = useState({
-        source:"",
-        amount:"",
-        date:"",
-        icon:"",
-    })
+const AddIncomeForm = ({ onAddIncome, existingData, isEditing }) => {
+    const [formData, setFormData] = useState({
+        source: "",
+        amount: "",
+        date: "",
+        icon: ""
+    });
 
-    const handleChange = (key, value) => setIncome({...income,[key]:value});
+    // Pre-fill form data if editing
+    useEffect(() => {
+        if (existingData) {
+            setFormData({
+                source: existingData.source || "",
+                amount: existingData.amount || "",
+                date: existingData.date ? existingData.date.split("T")[0] : "",
+                icon: existingData.icon || ""
+            });
+        }
+    }, [existingData]);
+
+    const handleChange = (key, value) => {
+        setFormData((prev) => ({ ...prev, [key]: value }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (isEditing && existingData?._id) {
+            onAddIncome({ ...formData, _id: existingData._id });
+        } else {
+            onAddIncome(formData);
+        }
+    };
+
     return (
-        <div>
-            <EmojiPickerPopup 
-            icon={income.icon}
-            onSelect={(selectedIcon) => handleChange("icon", selectedIcon)}
+        <form onSubmit={handleSubmit}>
+            <EmojiPickerPopup
+                icon={formData.icon}
+                onSelect={(selectedIcon) => handleChange("icon", selectedIcon)}
             />
+
             <Input
-            value={income.source}
-            onChange={({target}) => handleChange("source",target.value)}
-            label="Income Source"
-            placeholder="Freelance, Salary, etc"
-            type="text"
+                value={formData.source}
+                onChange={({ target }) => handleChange("source", target.value)}
+                label="Income Source"
+                placeholder="Freelance, Salary, etc"
+                type="text"
             />
+
             <Input
-            value={income.amount}
-            onChange={({target}) => handleChange("amount",target.value)}
-            label="Amount"
-            placeholder=""
-            type="number"
+                value={formData.amount}
+                onChange={({ target }) => handleChange("amount", target.value)}
+                label="Amount"
+                placeholder="Enter amount"
+                type="number"
             />
+
             <Input
-            value={income.date}
-            onChange={({target}) => handleChange("date",target.value)}
-            label="Date"
-            placeholder=""
-            type="date"
+                value={formData.date}
+                onChange={({ target }) => handleChange("date", target.value)}
+                label="Date"
+                placeholder=""
+                type="date"
             />
+
             <div className='flex justify-end mt-6'>
                 <button
-                type='button'
-                className='add-btn add-btn-fill'
-                onClick={()=>onAddIncome(income)}
+                    type="submit"
+                    className='add-btn add-btn-fill'
                 >
-                    Add Income
+                    {isEditing ? "Update Income" : "Add Income"}
                 </button>
             </div>
-        </div>
-    )
-}
+        </form>
+    );
+};
 
-export default AddIncomeForm
+export default AddIncomeForm;

@@ -37,6 +37,31 @@ exports.getAllExpense = async (req, res) => {
         res.status(500).json({ message: "Server Error" })
     }
 }
+// Update Expense
+exports.updateExpense = async (req, res) => {
+    const userId = req.user.id;
+    const { id } = req.params;
+    const { icon, category, amount, date } = req.body;
+
+    try {
+        const expense = await Expense.findOne({ _id: id, userId });
+        if (!expense) {
+            return res.status(404).json({ message: "Expense not found" });
+        }
+
+        expense.icon = icon || expense.icon;
+        expense.category = category || expense.category;
+        expense.amount = amount || expense.amount;
+        expense.date = date ? new Date(date) : expense.date;
+
+        await expense.save();
+        res.status(200).json({ message: "Expense updated successfully", expense });
+    } catch (error) {
+        console.error("Error updating expense:", error);
+        res.status(500).json({ message: "Server Error" });
+    }
+};
+
 // Delete Expense Source
 exports.deleteExpense = async (req, res) => {
     try {

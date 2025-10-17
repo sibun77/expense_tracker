@@ -2,6 +2,7 @@ const express = require("express")
 const {
     addIncome,
     getAllIncome,
+    updateIncome,
     deleteIncome,
     downloadIncomeExcel
 } = require("../controllers/incomeController");
@@ -12,6 +13,7 @@ const router = express.Router();
 
 router.post("/add",protect,addIncome);
 router.get("/get",protect,getAllIncome);
+router.put("/update/:id", protect, updateIncome);
 router.get("/downloadexcel",protect,downloadIncomeExcel);
 router.delete("/:id",protect,deleteIncome)
 

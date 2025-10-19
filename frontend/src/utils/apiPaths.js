@@ -15,6 +15,9 @@ export const API_PATHS = {
         GET_ALL_INCOME: "/api/v1/income/get",
         UPDATE_INCOME: (incomeId) => `/api/v1/income/update/${incomeId}`,
         DELETE_INCOME: (incomeId) => `/api/v1/income/${incomeId}`,
+        GET_CATEGORIES: "/api/v1/category/income",
+        ADD_CATEGORY: "/api/v1/category/income",
+        DELETE_CATEGORY: "/api/v1/category/income",
         DOWNLOAD_INCOME: "/api/v1/income/downloadexcel"
     },
     EXPENSE: {
@@ -22,6 +25,9 @@ export const API_PATHS = {
         GET_ALL_EXPENSE: "/api/v1/expense/get",
         UPDATE_EXPENSE: (expenseId) => `/api/v1/expense/update/${expenseId}`,
         DELETE_EXPENSE: (expenseId) => `/api/v1/expense/${expenseId}`,
+        GET_CATEGORIES: "/api/v1/category/expense",
+        ADD_CATEGORY: "/api/v1/category/expense",
+        DELETE_CATEGORY: "/api/v1/category/expense",
         DOWNLOAD_EXPENSE: "/api/v1/expense/downloadexcel",
     },
 

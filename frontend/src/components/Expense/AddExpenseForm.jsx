@@ -1,46 +1,180 @@
-import React, { useState } from 'react'
-import Input from '../../components/Inputs/Input'
-import EmojiPickerPopup from '../EmojiPickerPopup'
+import React, { useState, useEffect } from "react";
+import Input from "../../components/Inputs/Input";
+import EmojiPickerPopup from "../EmojiPickerPopup";
+import axiosInstance from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
+import { toast } from "react-hot-toast";
 
 const AddExpenseForm = ({ onAddExpense, existingData, isEditing }) => {
     const [formData, setFormData] = useState({
         category: existingData?.category || "",
         amount: existingData?.amount || "",
         date: existingData?.date ? existingData.date.split("T")[0] : "",
-        icon: existingData?.icon || ""
+        icon: existingData?.icon || "",
     });
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (isEditing) {
-            onAddExpense({ ...formData, _id: existingData._id });
+    const [categories, setCategories] = useState([]);
+    const [showNewCategoryInput, setShowNewCategoryInput] = useState(false);
+    const [newCategory, setNewCategory] = useState("");
+
+    // ✅ Fetch expense categories
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axiosInstance.get(API_PATHS.EXPENSE.GET_CATEGORIES);
+                if (response.data) {
+                    setCategories(response.data);
+                }
+            } catch (error) {
+                console.error("Error fetching expense categories:", error);
+            }
+        };
+        fetchCategories();
+    }, []);
+
+    const handleChange = (key, value) => {
+        setFormData((prev) => ({ ...prev, [key]: value }));
+    };
+
+    const handleCategoryChange = (e) => {
+        const value = e.target.value;
+        if (value === "other") {
+            setShowNewCategoryInput(true);
+            handleChange("category", "");
         } else {
-            onAddExpense(formData);
+            setShowNewCategoryInput(false);
+            handleChange("category", value);
         }
     };
 
-    const handleChange = (key, value) => setFormData({ ...formData, [key]: value });
+    // ✅ Add new expense category to backend
+    const handleAddNewCategory = async () => {
+        if (!newCategory.trim()) {
+            toast.error("Enter a valid category name");
+            return;
+        }
+        try {
+            const response = await axiosInstance.post(API_PATHS.EXPENSE.ADD_CATEGORY, {
+                name: newCategory,
+            });
+            const added = response.data;
+            setCategories((prev) => [...prev, added]);
+            handleChange("category", added.name);
+            setShowNewCategoryInput(false);
+            setNewCategory("");
+            toast.success("New category added");
+        } catch (error) {
+            console.error("Error adding new expense category:", error);
+            toast.error("Failed to add expense category");
+        }
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const dataToSend = { ...formData };
+        if (showNewCategoryInput && newCategory.trim()) {
+            dataToSend.category = newCategory.trim();
+        }
+
+        if (isEditing && existingData?._id) {
+            onAddExpense({ ...dataToSend, _id: existingData._id });
+        } else {
+            onAddExpense(dataToSend);
+        }
+    };
 
     return (
-        <div>
+        <form onSubmit={handleSubmit}>
             <EmojiPickerPopup
                 icon={formData.icon}
                 onSelect={(selectedIcon) => handleChange("icon", selectedIcon)}
             />
 
-            <Input
-                value={formData.category}
-                onChange={({ target }) => handleChange("category", target.value)}
-                label="Expense Category"
-                placeholder="Rent, Groceries, etc"
-                type="text"
-            />
+            {/* ✅ Category Dropdown */}
+            <label className="block mb-1 font-medium text-gray-700">
+                Expense Category
+            </label>
+            <select
+                value={showNewCategoryInput ? "other" : formData.category || ""}
+                onChange={handleCategoryChange}
+                className="border rounded p-2 w-full mb-3"
+            >
+                <option value="">-- Select Category --</option>
+                {categories.map((cat) => (
+                    <option key={cat._id} value={cat.name}>
+                        {cat.name}
+                    </option>
+                ))}
+                <option value="other">Other...</option>
+            </select>
+
+            {/* ✅ Delete selected custom category */}
+            {formData.category && !showNewCategoryInput && (
+                <div className="flex items-center justify-between mb-3">
+                    <p className="text-sm text-gray-600">
+                        Selected: <span className="font-medium">{formData.category}</span>
+                    </p>
+
+                    {(() => {
+                        const selectedCat = categories.find((c) => c.name === formData.category);
+                        if (selectedCat && !selectedCat.isDefault) {
+                            return (
+                                <button
+                                    type="button"
+                                    onClick={async () => {
+                                        if (window.confirm("Delete this category?")) {
+                                            try {
+                                                await axiosInstance.delete(
+                                                    `${API_PATHS.EXPENSE.DELETE_CATEGORY}/${selectedCat._id}`
+                                                );
+                                                toast.success("Category deleted");
+                                                setCategories((prev) =>
+                                                    prev.filter((c) => c._id !== selectedCat._id)
+                                                );
+                                                handleChange("category", "");
+                                            } catch (error) {
+                                                console.error(error);
+                                                toast.error("Failed to delete category");
+                                            }
+                                        }
+                                    }}
+                                    className="text-red-600 hover:text-red-800 text-sm"
+                                >
+                                    Delete
+                                </button>
+                            );
+                        }
+                        return null;
+                    })()}
+                </div>
+            )}
+
+
+            {/* ✅ New Category Input */}
+            {showNewCategoryInput && (
+                <div className="mb-3">
+                    <Input
+                        value={newCategory}
+                        onChange={({ target }) => setNewCategory(target.value)}
+                        label="New Category"
+                        placeholder="Enter new expense category"
+                        type="text"
+                    />
+                    <button
+                        type="button"
+                        onClick={handleAddNewCategory}
+                        className="bg-blue-600 text-white px-3 py-1 rounded mt-1"
+                    >
+                        Add Category
+                    </button>
+                </div>
+            )}
 
             <Input
                 value={formData.amount}
                 onChange={({ target }) => handleChange("amount", target.value)}
                 label="Amount"
-                placeholder=""
+                placeholder="Enter amount"
                 type="number"
             />
 
@@ -52,16 +186,12 @@ const AddExpenseForm = ({ onAddExpense, existingData, isEditing }) => {
                 type="date"
             />
 
-            <div className='flex justify-end mt-6'>
-                <button
-                    type='button'
-                    className='add-btn add-btn-fill'
-                    onClick={handleSubmit}
-                >
+            <div className="flex justify-end mt-6">
+                <button type="submit" className="add-btn add-btn-fill">
                     {isEditing ? "Update Expense" : "Add Expense"}
                 </button>
             </div>
-        </div>
+        </form>
     );
 };
 

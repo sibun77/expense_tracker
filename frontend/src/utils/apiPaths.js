@@ -30,11 +30,12 @@ export const API_PATHS = {
         DELETE_CATEGORY: "/api/v1/category/expense",
         DOWNLOAD_EXPENSE: "/api/v1/expense/downloadexcel",
     },
-
     IMAGE: {
         UPLOAD_IMAGE: "/api/v1/auth/upload-image"
     },
     AI: {
-        AI_REVIEW: "/api/v1/ai/review"
+        ANALYZE: "/api/v1/ai/analyze",
+        EXTRACT_TRANSACTIONS: "/api/v1/ai/extract-transactions",
+        IMPORT: "/api/v1/ai/import",
     }
-}
+};

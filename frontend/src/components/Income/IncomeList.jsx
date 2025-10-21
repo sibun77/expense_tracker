@@ -1,6 +1,5 @@
 import React from 'react'
 import { LuDownload } from 'react-icons/lu'
-import { FaEdit } from "react-icons/fa";
 import TransactionInfoCard from '../Cards/TransactionInfoCard'
 import moment from 'moment'
 

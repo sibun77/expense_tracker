@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import { FiEdit, FiCheckSquare } from "react-icons/fi";
 import { FaCheckDouble } from "react-icons/fa";
-import axiosInstance from "../../utils/axiosInstance.jsx";
+import axiosInstance from "../../utils/axiosInstance.js";
 import EditTransactionModal from "./EditTransactionModal.jsx";
 import { API_PATHS } from "../../utils/apiPaths.js";
 

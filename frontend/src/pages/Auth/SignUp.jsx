@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react'
-import AuthLayout from '../../components/layouts/AuthLayout'
+import AuthLayout from '../../components/layouts/AuthLayout.jsx'
 import { Link, useNavigate } from 'react-router-dom'
-import Input from '../../components/Inputs/Input'
+import Input from '../../components/Inputs/Input.jsx'
 import { validateEmail } from '../../utils/helper.js'
 import ProfilePhotoSelector from '../../components/Inputs/ProfilePhotoSelector.jsx'
 import axiosInstance from '../../utils/axiosInstance.js'
 import { API_PATHS } from '../../utils/apiPaths.js'
-import { UserContext } from '../../context/UserContext'
+import { UserContext } from '../../context/UserContext.jsx'
 import uploadImage from '../../utils/uploadImage.js'
 
 const SignUp = () => {

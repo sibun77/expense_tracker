@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import { FiEdit, FiCheckSquare } from "react-icons/fi";
 import { FaCheckDouble } from "react-icons/fa";
-import axiosInstance from "../../utils/axiosInstance";
-import EditTransactionModal from "./EditTransactionModal";
-import { API_PATHS } from "../../utils/apiPaths";
+import axiosInstance from "../../utils/axiosInstance.jsx";
+import EditTransactionModal from "./EditTransactionModal.jsx";
+import { API_PATHS } from "../../utils/apiPaths.js";
 
 const ReviewExtractedData = ({ data, onClear }) => {
     const [selected, setSelected] = useState([]);

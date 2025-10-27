@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import DashboardLayout from '../../components/layouts/DashboardLayout'
-import { useUserAuth } from '../../hooks/useUserAuth';
+import DashboardLayout from '../../components/layouts/DashboardLayout.jsx'
+import { useUserAuth } from '../../hooks/useUserAuth.jsx';
 import { useNavigate } from 'react-router-dom';
-import { API_PATHS } from '../../utils/apiPaths';
-import InfoCard from '../../components/Cards/InfoCard';
+import { API_PATHS } from '../../utils/apiPaths.js';
+import InfoCard from '../../components/Cards/InfoCard.jsx';
 import { LuHandCoins, LuWalletMinimal } from "react-icons/lu";
 import { IoMdCard } from "react-icons/io"
-import { addThousandsSeparator } from '../../utils/helper';
-import axiosInstance from '../../utils/axiosInstance';
-import RecentTransactions from '../../components/Dashboard/RecentTransactions';
-import FinanceOverview from '../../components/Dashboard/FinanceOverview';
-import ExpenseTransactions from '../../components/Dashboard/ExpenseTransactions';
-import Last30DaysExpenses from '../../components/Dashboard/Last30DaysExpenses';
-import RecentIncomeWithChart from '../../components/Dashboard/RecentIncomeWithChart';
-import RecentIncome from '../../components/Dashboard/RecentIncome';
+import { addThousandsSeparator } from '../../utils/helper.js';
+import axiosInstance from '../../utils/axiosInstance.js';
+import RecentTransactions from '../../components/Dashboard/RecentTransactions.jsx';
+import FinanceOverview from '../../components/Dashboard/FinanceOverview.jsx';
+import ExpenseTransactions from '../../components/Dashboard/ExpenseTransactions.jsx';
+import Last30DaysExpenses from '../../components/Dashboard/Last30DaysExpenses.jsx';
+import RecentIncomeWithChart from '../../components/Dashboard/RecentIncomeWithChart.jsx';
+import RecentIncome from '../../components/Dashboard/RecentIncome.jsx';
 
 const Home = () => {
   useUserAuth();

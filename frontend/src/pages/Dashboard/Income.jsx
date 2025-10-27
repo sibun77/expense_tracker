@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import DashboardLayout from '../../components/layouts/DashboardLayout.jsx'
-import IncomeOverview from '../../components/Income/IncomeOverview'
-import { API_PATHS } from '../../utils/apiPaths';
+import IncomeOverview from '../../components/Income/IncomeOverview.jsx'
+import { API_PATHS } from '../../utils/apiPaths.js';
 import axiosInstance from '../../utils/axiosInstance.js';
 import Modal from '../../components/Modal.jsx';
 import AddIncomeForm from '../../components/Income/AddIncomeForm.jsx'

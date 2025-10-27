@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import axiosInstance from "../../utils/axiosInstance";
+import axiosInstance from "../../utils/axiosInstance.js";
 import { toast } from "react-hot-toast";
-import { API_PATHS } from "../../utils/apiPaths";
+import { API_PATHS } from "../../utils/apiPaths.js";
 
 
 const UploadFileModal = ({ open, onClose, onExtract }) => {

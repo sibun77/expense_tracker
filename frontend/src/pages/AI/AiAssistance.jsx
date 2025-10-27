@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import DashboardLayout from "../../components/layouts/DashboardLayout";
-import TaskCard from "../../components/Ai/TaskCard";
-import AnalyzeModal from "../../components/Ai/AnalyzeModal";
-import UploadFileModal from "../../components/Ai/UploadFileModal";
-import AnalysisResult from "../../components/Ai/AnalysisResult";
-import ReviewExtractedData from "../../components/Ai/ReviewExtractedData"; // ✅ add this import
-import axiosInstance from "../../utils/axiosInstance";
+import DashboardLayout from "../../components/layouts/DashboardLayout.jsx";
+import TaskCard from "../../components/Ai/TaskCard.jsx";
+import AnalyzeModal from "../../components/Ai/AnalyzeModal.jsx";
+import UploadFileModal from "../../components/Ai/UploadFileModal.jsx";
+import AnalysisResult from "../../components/Ai/AnalysisResult.jsx";
+import ReviewExtractedData from "../../components/Ai/ReviewExtractedData.jsx"; 
+import axiosInstance from "../../utils/axiosInstance.js";
 import { toast } from "react-hot-toast";
-import { useUserAuth } from "../../hooks/useUserAuth";
-import { API_PATHS } from "../../utils/apiPaths";
+import { useUserAuth } from "../../hooks/useUserAuth.jsx";
+import { API_PATHS } from "../../utils/apiPaths.js";
 const AiAssistance = () => {
     useUserAuth();
 

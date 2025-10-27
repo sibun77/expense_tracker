@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Input from "../../components/Inputs/Input";
-import EmojiPickerPopup from "../EmojiPickerPopup";
-import axiosInstance from "../../utils/axiosInstance";
-import { API_PATHS } from "../../utils/apiPaths";
+import Input from "../../components/Inputs/Input.jsx";
+import EmojiPickerPopup from "../EmojiPickerPopup.jsx";
+import axiosInstance from "../../utils/axiosInstance.js";
+import { API_PATHS } from "../../utils/apiPaths.js";
 import { toast } from "react-hot-toast";
 
 const AddExpenseForm = ({ onAddExpense, existingData, isEditing }) => {

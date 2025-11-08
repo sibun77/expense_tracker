@@ -1,4 +1,7 @@
-export const BASE_URL = "https://expense-tracker-backend-silk.vercel.app/";
+// BASE_URL of local server
+export const BASE_URL = "http://localhost:8000";
+// BASE_URL of deployed server
+// export const BASE_URL = "https://expense-tracker-backend-silk.vercel.app/";
 
 // utils/apiPath.js
 export const API_PATHS = {
